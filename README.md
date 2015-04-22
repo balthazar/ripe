@@ -1,6 +1,6 @@
 # waitFor
 
-[![Build Status](https://travis-ci.org/Apercu/waitFor.svg?branch=develop)](https://travis-ci.org/Apercu/waitFor) [![Dependency Status](https://david-dm.org/Apercu/waitFor.svg)](https://david-dm.org/Apercu/waitFor) [![Code Climate](https://codeclimate.com/github/Apercu/waitFor/badges/gpa.svg)](https://codeclimate.com/github/Apercu/waitFor)
+[![Coverage Status](https://coveralls.io/repos/Apercu/waitFor/badge.svg?branch=master)](https://coveralls.io/r/Apercu/waitFor?branch=master) [![Build Status](https://travis-ci.org/Apercu/waitFor.svg?branch=master)](https://travis-ci.org/Apercu/waitFor) [![Dependency Status](https://david-dm.org/Apercu/waitFor.svg)](https://david-dm.org/Apercu/waitFor) [![Code Climate](https://codeclimate.com/github/Apercu/waitFor/badges/gpa.svg)](https://codeclimate.com/github/Apercu/waitFor)
 
 > A simple node module that makes process dependencies easier.
 
