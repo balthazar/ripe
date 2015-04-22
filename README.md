@@ -1,42 +1,42 @@
-# waitFor
+# ripe
 
-[![Build Status](https://travis-ci.org/Apercu/waitFor.svg?branch=master)](https://travis-ci.org/Apercu/waitFor) [![Coverage Status](https://coveralls.io/repos/Apercu/waitFor/badge.svg?branch=master)](https://coveralls.io/r/Apercu/waitFor?branch=master) [![Dependency Status](https://david-dm.org/Apercu/waitFor.svg)](https://david-dm.org/Apercu/waitFor) [![Code Climate](https://codeclimate.com/github/Apercu/waitFor/badges/gpa.svg)](https://codeclimate.com/github/Apercu/waitFor)
+[![Build Status](https://travis-ci.org/Apercu/ripe.svg?branch=master)](https://travis-ci.org/Apercu/ripe) [![Coverage Status](https://coveralls.io/repos/Apercu/ripe/badge.svg?branch=master)](https://coveralls.io/r/Apercu/ripe?branch=master) [![Dependency Status](https://david-dm.org/Apercu/ripe.svg)](https://david-dm.org/Apercu/ripe) [![Code Climate](https://codeclimate.com/github/Apercu/ripe/badges/gpa.svg)](https://codeclimate.com/github/Apercu/ripe)
 
 > A simple node module that makes process dependencies easier.
 
 ### Install
 
-    npm install --save waitFor
+    npm install --save ripe
 
 ### Usage
 
-    waitFor.wait(function () {
+    ripe.wait(function () {
       // ready!
     });
 
     // Could be in another process
     setTimeout(function () {
-      waitFor.ready();
+      ripe.ready();
     }, 42);
 
 The `wait` method can be used either with a callback or a promise.
 
-    waitFor.wait(function () {
+    ripe.wait(function () {
       // ready!
     });
 
-    waitFor.wait().then(function () {
+    ripe.wait().then(function () {
       // ready!
     });
 
 You can configure the the port used by the websocket server with an optional object.
 
-    waitFor.wait({ port: 420 }, function () {});
+    ripe.wait({ port: 420 }, function () {});
 
 When your work is done, you only have to call the `ready` function.
 
-    waitFor.ready();
+    ripe.ready();
 
 You can also give it an optional object and a callback or use the promise.
 
-    waitFor.ready({ port: 420 });
+    ripe.ready({ port: 420 });

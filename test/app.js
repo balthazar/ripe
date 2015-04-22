@@ -1,9 +1,9 @@
 'use strict';
 
 var assert = require('assert');
-var waitFor = require('../');
+var ripe = require('../');
 
-describe('waitFor', function () {
+describe('ripe', function () {
 
   function assertReadyMessage (opts, cb) {
 
@@ -29,26 +29,26 @@ describe('waitFor', function () {
 
   it('should test the ready function without parameters', function (cb) {
     assertReadyMessage(cb);
-    waitFor.ready();
+    ripe.ready();
   });
 
   it('should test the ready function with a callback', function (cb) {
     assertReadyMessage(cb);
-    waitFor.ready(function (err) {
+    ripe.ready(function (err) {
       assert.strictEqual(!!err, false);
     });
   });
 
   it('should test the ready function with a promise', function (cb) {
     assertReadyMessage(cb);
-    waitFor.ready().then(function (err) {
+    ripe.ready().then(function (err) {
       assert.strictEqual(!!err, false);
     });
   });
 
   it('should test the ready function with an optional port', function (cb) {
     assertReadyMessage({ port: 1336 }, cb);
-    waitFor.ready({ port: 1336 }, function (err) {
+    ripe.ready({ port: 1336 }, function (err) {
       assert.strictEqual(!!err, false);
     });
   });
@@ -57,7 +57,7 @@ describe('waitFor', function () {
 
     assertReadyMessage({ port: 1336 }, cb);
 
-    waitFor.ready(function (err) {
+    ripe.ready(function (err) {
       assert.strictEqual(err.code, 'ECONNREFUSED');
     }).catch(function (err) {
       assert.strictEqual(err.code, 'ECONNREFUSED');
@@ -68,59 +68,59 @@ describe('waitFor', function () {
 
   it('should wait for something using a callback', function (cb) {
 
-    waitFor.wait(function (err) {
+    ripe.wait(function (err) {
       assert.strictEqual(!!err, false);
       cb();
     });
 
     setTimeout(function () {
-      waitFor.ready();
+      ripe.ready();
     }, 142);
 
   });
 
   it('should wait for something using a promise', function (cb) {
 
-    waitFor.wait().then(function (err) {
+    ripe.wait().then(function (err) {
       assert.strictEqual(!!err, false);
       cb();
     });
 
     setTimeout(function () {
-      waitFor.ready();
+      ripe.ready();
     }, 142);
 
   });
 
   it('should wait for something using options and callback', function (cb) {
 
-    waitFor.wait({ port: 1334 }, function (err) {
+    ripe.wait({ port: 1334 }, function (err) {
       assert.strictEqual(!!err, false);
       cb();
     });
 
     setTimeout(function () {
-      waitFor.ready({ port: 1334 });
+      ripe.ready({ port: 1334 });
     }, 142);
 
   });
 
   it('should wait for something using options and promise', function (cb) {
 
-    waitFor.wait({ port: 1664 }).then(function (err) {
+    ripe.wait({ port: 1664 }).then(function (err) {
       assert.strictEqual(!!err, false);
       cb();
     });
 
     setTimeout(function () {
-      waitFor.ready({ port: 1664 });
+      ripe.ready({ port: 1664 });
     }, 142);
 
   });
 
   it('should wait for something using options, promise and callback', function (cb) {
 
-    waitFor.wait({ port: 1664 }, function (err) {
+    ripe.wait({ port: 1664 }, function (err) {
       assert.strictEqual(!!err, false);
     }).then(function (err) {
       assert.strictEqual(!!err, false);
@@ -128,7 +128,7 @@ describe('waitFor', function () {
     });
 
     setTimeout(function () {
-      waitFor.ready({ port: 1664 });
+      ripe.ready({ port: 1664 });
     }, 142);
 
   });

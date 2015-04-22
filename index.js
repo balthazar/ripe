@@ -4,7 +4,7 @@ var q = require('q');
 
 var noop = function () {};
 
-var waitFor = {
+var ripe = {
 
   /**
    * When the task is ready, call this function to update the content of the file.
@@ -85,4 +85,4 @@ var waitFor = {
 
 };
 
-module.exports = waitFor;
+module.exports = ripe;

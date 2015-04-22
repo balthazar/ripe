@@ -1,5 +1,5 @@
 {
-  "name": "waitFor",
+  "name": "ripe",
   "version": "0.1.0",
   "description": "A simple module to wait for file content.",
   "main": "index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Apercu/waitFor.git"
+    "url": "https://github.com/Apercu/ripe.git"
   },
   "author": "Balthazar Gronon",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Apercu/waitFor/issues"
+    "url": "https://github.com/Apercu/ripe/issues"
   },
-  "homepage": "https://github.com/Apercu/waitFor",
+  "homepage": "https://github.com/Apercu/ripe",
   "dependencies": {
     "q": "^1.2.0",
     "ws": "^0.7.1"
