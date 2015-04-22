@@ -1,40 +1,31 @@
-# WaitFor
+# waitFor
 
 [![Build Status](https://travis-ci.org/Apercu/waitFor.svg?branch=develop)](https://travis-ci.org/Apercu/waitFor) [![Dependency Status](https://david-dm.org/Apercu/waitFor.svg)](https://david-dm.org/Apercu/waitFor) [![Code Climate](https://codeclimate.com/github/Apercu/waitFor/badges/gpa.svg)](https://codeclimate.com/github/Apercu/waitFor)
 
-> A simple node module to see when work is done in other processes, without having to rely on some timeouts.
+> A simple node module that makes process dependencies easier.
 
 ### Usage
 
     npm install --save waitFor
 
-First, you'll have to call the `start`
+First, you'll have to wait for something, you can either use a callback or a promise.
 
-    waitFor.start();
+    waitFor.wait(function () {
+      // ready!
+    });
 
-Do your job, and when it's done, call `ready`:
+    waitFor.wait().then(function () {
+      // ready!
+    });
+
+The `wait` method takes an optional object where you can configure the port used by the websocket server.
+
+    waitFor.wait({ port: 420 }, function () {});
+
+When your work is done, you only have to call the `ready` function.
 
     waitFor.ready();
 
-`start` and `ready` can tape an optional object with the `path` option.
+You can also give it an optional object and a callback or use the promise.
 
-    waitFor.start({ path: '/home/cron-launcher' });
-
-The `wait` takes an option object and a callback, it also return a promise,
-here the interval is used to determine the time between file reload.
-
-    waitFor.wait({ path: '../.refresh', interval: 50 }, function () {
-
-    });
-
-If you pass only one argument, we will check if it's either an object or a function.
-
-    waitFor.wait(function () {
-
-    });
-
-You can also call it without parameter and use it like:
-
-    waitFor.wait().then(function () {
-
-    });
+    waitFor.ready({ port: 420 });

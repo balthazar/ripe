@@ -1,184 +1,136 @@
 'use strict';
 
-var fs = require('fs');
-var del = require('del');
 var assert = require('assert');
 var waitFor = require('../');
 
 describe('waitFor', function () {
 
-  it('should create file when calling start without options', function (cb) {
+  function assertReadyMessage (opts, cb) {
 
-    waitFor.start().then(function () {
-      fs.readFile('.waitFor', function (err, data) {
-        if (err) { return cb(err); }
-        assert.strictEqual(data.toString(), 'waiting');
+    if (arguments.length === 1) {
+      cb = opts;
+      opts = null;
+    }
+
+    var port = opts ? opts.port : 1337;
+
+    var WebSocketServer = require('ws').Server,
+        wss = new WebSocketServer({ port: port });
+
+    wss.on('connection', function (ws) {
+      ws.on('message', function (msg) {
+        assert.strictEqual(msg, 'ready');
+        wss.close();
         cb();
       });
     });
 
+  }
+
+  it('should test the ready function without parameters', function (cb) {
+    assertReadyMessage(cb);
+    waitFor.ready();
   });
 
+  it('should test the ready function with a callback', function (cb) {
+    assertReadyMessage(cb);
+    waitFor.ready(function (err) {
+      assert.strictEqual(!!err, false);
+    });
+  });
 
-  it('should create a file in the specified path', function (cb) {
+  it('should test the ready function with a promise', function (cb) {
+    assertReadyMessage(cb);
+    waitFor.ready().then(function (err) {
+      assert.strictEqual(!!err, false);
+    });
+  });
 
-    waitFor.start({ path: __dirname + '/.test' }).then(function () {
-      fs.readFile('./test/.test', function (err, data) {
-        if (err) { return cb(err); }
-        assert.strictEqual(data.toString(), 'waiting');
-        cb();
-      });
+  it('should test the ready function with an optional port', function (cb) {
+    assertReadyMessage({ port: 1336 }, cb);
+    waitFor.ready({ port: 1336 }, function (err) {
+      assert.strictEqual(!!err, false);
+    });
+  });
+
+  it('should try to connect to a wrong port', function (cb) {
+
+    assertReadyMessage({ port: 1336 }, cb);
+
+    waitFor.ready(function (err) {
+      assert.strictEqual(err.code, 'ECONNREFUSED');
+    }).catch(function (err) {
+      assert.strictEqual(err.code, 'ECONNREFUSED');
+      cb();
     });
 
   });
 
-  it('should call the ready method and thus see a file change', function (cb) {
-
-    fs.readFile('.waitFor', function (err, data) {
-      if (err) { return cb(err); }
-      assert.strictEqual(data.toString(), 'waiting');
-
-      waitFor.ready().then(function () {
-        fs.readFile('.waitFor', function (err, data) {
-          if (err) { return cb(err); }
-          assert.strictEqual(data.toString(), 'ready');
-          cb();
-        });
-      });
-
-    });
-
-  });
-
-  it('should test the wait flow using a callback', function (cb) {
-
-    var check = false;
-    waitFor.start();
-
-    waitFor.wait(function () {
-      assert.strictEqual(check, true);
-      fs.readFile('.waitFor', function (err) {
-        assert.equal(!!err, true);
-        assert.strictEqual(err.code, 'ENOENT');
-        cb();
-      });
-    });
-
-    setTimeout(function () {
-      check = true;
-      waitFor.ready();
-    }, 242);
-
-  });
-
-  it('should test the wait flow using a promise and no parameters', function (cb) {
-
-    var check = false;
-    waitFor.start();
-
-    waitFor.wait().then(function () {
-      assert.strictEqual(check, true);
-      fs.readFile('.waitFor', function (err) {
-        assert.equal(!!err, true);
-        assert.strictEqual(err.code, 'ENOENT');
-        cb();
-      });
-    });
-
-    setTimeout(function () {
-      check = true;
-      waitFor.ready();
-    }, 242);
-
-  });
-
-  it('should test the wait flow using some random options and a callback', function (cb) {
-
-    var check = false;
-    waitFor.start();
-
-    waitFor.wait({ timeout: (Math.floor(Math.random() * 100) + 1) }, function () {
-      assert.strictEqual(check, true);
-      fs.readFile('.waitFor', function (err) {
-        assert.equal(!!err, true);
-        assert.strictEqual(err.code, 'ENOENT');
-        cb();
-      });
-    });
-
-    setTimeout(function () {
-      check = true;
-      waitFor.ready();
-    }, 242);
-
-  });
-
-  it('should test the wait flow using some random options and a promise', function (cb) {
-
-    var check = false;
-    waitFor.start();
-
-    waitFor.wait({ timeout: (Math.floor(Math.random() * 100) + 1) }).then(function () {
-      assert.strictEqual(check, true);
-      fs.readFile('.waitFor', function (err) {
-        assert.equal(!!err, true);
-        assert.strictEqual(err.code, 'ENOENT');
-        cb();
-      });
-    });
-
-    setTimeout(function () {
-      check = true;
-      waitFor.ready();
-    }, 242);
-
-  });
-
-  it('should try to chmod the waiting file', function (cb) {
-
-    waitFor.start();
+  it('should wait for something using a callback', function (cb) {
 
     waitFor.wait(function (err) {
-      assert.equal(!!err, true);
-      assert.strictEqual(err.code, 'EACCES');
-    }).catch(function (err) {
-      assert.equal(!!err, true);
-      assert.strictEqual(err.code, 'EACCES');
+      assert.strictEqual(!!err, false);
       cb();
     });
 
     setTimeout(function () {
       waitFor.ready();
-      fs.chmodSync('.waitFor', '000');
-    }, 42);
+    }, 142);
 
   });
 
-  /*
-  it('should remove the file', function (cb) {
+  it('should wait for something using a promise', function (cb) {
 
-    waitFor.start();
-
-    waitFor.wait(function (err) {
-      assert.equal(!!err, true);
-      assert.strictEqual(err.code, 'ENOENT');
-      console.log(err);
-      cb();
-    }).catch(function (err) {
-      assert.equal(!!err, true);
-      assert.strictEqual(err.code, 'ENOENT');
+    waitFor.wait().then(function (err) {
+      assert.strictEqual(!!err, false);
       cb();
     });
 
     setTimeout(function () {
       waitFor.ready();
-      fs.unlinkSync('.waitFor');
-    }, 42);
-  });
-  */
+    }, 142);
 
-  after(function (cb) {
-    del(['.waitFor', './test/.test'], cb);
+  });
+
+  it('should wait for something using options and callback', function (cb) {
+
+    waitFor.wait({ port: 1334 }, function (err) {
+      assert.strictEqual(!!err, false);
+      cb();
+    });
+
+    setTimeout(function () {
+      waitFor.ready({ port: 1334 });
+    }, 142);
+
+  });
+
+  it('should wait for something using options and promise', function (cb) {
+
+    waitFor.wait({ port: 1664 }).then(function (err) {
+      assert.strictEqual(!!err, false);
+      cb();
+    });
+
+    setTimeout(function () {
+      waitFor.ready({ port: 1664 });
+    }, 142);
+
+  });
+
+  it('should wait for something using options, promise and callback', function (cb) {
+
+    waitFor.wait({ port: 1664 }, function (err) {
+      assert.strictEqual(!!err, false);
+    }).then(function (err) {
+      assert.strictEqual(!!err, false);
+      cb();
+    });
+
+    setTimeout(function () {
+      waitFor.ready({ port: 1664 });
+    }, 142);
+
   });
 
 });

@@ -18,11 +18,11 @@
   },
   "homepage": "https://github.com/Apercu/waitFor",
   "dependencies": {
-    "q": "^1.2.0"
+    "q": "^1.2.0",
+    "ws": "^0.7.1"
   },
   "devDependencies": {
     "coveralls": "^2.11.2",
-    "del": "^1.1.1",
     "istanbul": "^0.3.13",
     "mocha": "^2.2.4"
   }
