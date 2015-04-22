@@ -1,7 +1,6 @@
 'use strict';
 
 var q = require('q');
-var fs = require('fs');
 
 var noop = function () {};
 
@@ -44,7 +43,7 @@ var waitFor = {
     ws.on('error', function (err) {
       def.reject(err);
       cb(err);
-    })
+    });
 
     return def.promise;
 
@@ -65,7 +64,7 @@ var waitFor = {
     }
 
     options = options || {};
-    var cb = cb || noop;
+    cb = cb || noop;
 
     var WebSocketServer = require('ws').Server,
         wss = new WebSocketServer({ port: options.port ? options.port : 1337 });
@@ -77,7 +76,7 @@ var waitFor = {
         wss.close();
         def.resolve();
         cb();
-      })
+      });
     });
 
     return def.promise;
