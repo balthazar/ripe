@@ -4,7 +4,8 @@
   "description": "A simple module to wait for file content.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "test": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
+    "cover": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,9 @@
     "q": "^1.2.0"
   },
   "devDependencies": {
+    "coveralls": "^2.11.2",
     "del": "^1.1.1",
+    "istanbul": "^0.3.13",
     "mocha": "^2.2.4"
   }
 }
