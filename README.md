@@ -4,11 +4,22 @@
 
 > A simple node module that makes process dependencies easier.
 
-### Usage
+### Install
 
     npm install --save waitFor
 
-First, you'll have to wait for something, you can either use a callback or a promise.
+### Usage
+
+    waitFor.wait(function () {
+      // ready!
+    });
+
+    // Could be in another process
+    setTimeout(function () {
+      waitFor.ready();
+    }, 42);
+
+The `wait` method can be used either with a callback or a promise.
 
     waitFor.wait(function () {
       // ready!
@@ -18,7 +29,7 @@ First, you'll have to wait for something, you can either use a callback or a pro
       // ready!
     });
 
-The `wait` method takes an optional object where you can configure the port used by the websocket server.
+You can configure the the port used by the websocket server with an optional object.
 
     waitFor.wait({ port: 420 }, function () {});
 
