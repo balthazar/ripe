@@ -4,7 +4,7 @@
   "description": "A simple module to wait for file content.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/Apercu/waitFor",
   "dependencies": {
-    "q": "^1.2.0",
-    "readable-stream": "^1.0.33"
+    "q": "^1.2.0"
+  },
+  "devDependencies": {
+    "del": "^1.1.1",
+    "mocha": "^2.2.4"
   }
 }

@@ -6,20 +6,33 @@
 
     npm install --save waitFor
 
-First, you'll have to call the `start` with a path parameter
+First, you'll have to call the `start`
 
-    waitFor.start({ path: '.bangular-refresh' });
+    waitFor.start();
 
 Do your job, and when it's done, call `ready`:
 
-    waitFor.ready({ path: '.bangular-refresh' });
+    waitFor.ready();
 
-The `wait` will return a promise if no callback is provided
+`start` and `ready` can tape an optional object with the `path` option.
 
-    waitFor.wait({ path: '.bangular-refresh' }, function () {
-      // here
+    waitFor.start({ path: '/home/cron-launcher' });
+
+The `wait` takes an option object and a callback, it also return a promise,
+here the interval is used to determine the time between file reload.
+
+    waitFor.wait({ path: '../.refresh', interval: 50 }, function () {
+
     });
 
-    waitFor.wait({ path: '.bangular-refresh' }).then(function () {
-      // here
+If you pass only one argument, we will check if it's either an object or a function.
+
+    waitFor.wait(function () {
+
+    });
+
+You can also call it without parameter and use it like:
+
+    waitFor.wait().then(function () {
+
     });

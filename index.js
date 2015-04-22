@@ -4,35 +4,59 @@ var fs = require('fs');
 
 function writeToFile (path, str) {
 
-  var stream = fs.createWriteStream(path);
-  stream.end(str);
+  fs.writeFile(path || '.waitFor', str);
 
-};
+}
 
 var waitFor = {
 
+  /**
+   * Start the process, create a file to wait for.
+   *
+   * @param {Object} options
+   */
   start: function (options) {
 
-    if (!options || !options.path) { console.log('Error.'); }
+    options = options || {};
+
     writeToFile(options.path, 'waiting');
 
   },
 
+  /**
+   * When the task is ready, call this function to update the content of the file.
+   *
+   * @param {Object} options
+   */
   ready: function (options) {
 
-    if (!options || !options.path) { console.log('Error.'); }
+    options = options || {};
+
     writeToFile(options.path, 'ready');
 
   },
 
+  /**
+   * Wait for the file to contain the content specified by the ready task.
+   *
+   * @param {Object|} options
+   * @param {Function} cb
+   * @returns {*|promise}
+   */
   wait: function (options, cb) {
 
-    var id;
-    var def = !cb ? require('q').defer() : null;
+    if (arguments.length === 1 && typeof options === 'function') {
+      cb = options;
+    }
 
-    id = setInterval(function () {
+    options = options || {};
+    cb = cb || function () {};
 
-      fs.readFile(options.path, 'utf-8', function (err, data) {
+    var def = require('q').defer();
+
+    var id = setInterval(function () {
+
+      fs.readFile(options.path || '.waitFor', 'utf-8', function (err, data) {
 
         if (err) {
           if (err.code === 'ENOENT') {
@@ -41,32 +65,25 @@ var waitFor = {
           }
 
           clearTimeout(id);
-          if (def) { def.reject(err); }
-          else { cb(err); }
+          def.reject(err);
+          cb(err);
         }
 
         if (data === 'ready') {
 
-          fs.unlink(options.path, function () {
+          fs.unlink(options.path || '.waitFor', function () {
             clearTimeout(id);
-
-            if (def) {
-              def.resolve();
-            } else {
-              cb();
-            }
-
+            def.resolve();
+            cb();
           });
 
         }
 
       });
 
-    }, options.timeout || 100);
+    }, options.interval || 100);
 
-    if (def) {
-      return def.promise;
-    }
+    return def.promise;
 
   }
 
