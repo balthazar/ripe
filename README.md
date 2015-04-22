@@ -1,6 +1,6 @@
 # WaitFor
 
-[![Dependency Status](https://david-dm.org/Apercu/waitFor.svg)](https://david-dm.org/Apercu/waitFor) [![Code Climate](https://codeclimate.com/github/Apercu/waitFor/badges/gpa.svg)](https://codeclimate.com/github/Apercu/waitFor)
+[![Build Status](https://travis-ci.org/Apercu/waitFor.svg?branch=develop)](https://travis-ci.org/Apercu/waitFor) [![Dependency Status](https://david-dm.org/Apercu/waitFor.svg)](https://david-dm.org/Apercu/waitFor) [![Code Climate](https://codeclimate.com/github/Apercu/waitFor/badges/gpa.svg)](https://codeclimate.com/github/Apercu/waitFor)
 
 > A simple node module to see when work is done in other processes, without having to rely on some timeouts.
 
