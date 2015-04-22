@@ -1,12 +1,9 @@
 'use strict';
 
+var q = require('q');
 var fs = require('fs');
 
-function writeToFile (path, str) {
-
-  fs.writeFile(path || '.waitFor', str);
-
-}
+var noop = function () {};
 
 var waitFor = {
 
@@ -14,12 +11,22 @@ var waitFor = {
    * Start the process, create a file to wait for.
    *
    * @param {Object} options
+   * @param {Function} cb
+   * @returns {*|promise}
    */
-  start: function (options) {
+  start: function (options, cb) {
 
+    var def = q.defer();
     options = options || {};
+    cb = cb || noop;
 
-    writeToFile(options.path, 'waiting');
+    fs.writeFile(options.path || '.waitFor', 'waiting', function (err) {
+      if (err) { def.reject(err); }
+      else { def.resolve(); }
+      cb(err);
+    });
+
+    return def.promise;
 
   },
 
@@ -27,12 +34,22 @@ var waitFor = {
    * When the task is ready, call this function to update the content of the file.
    *
    * @param {Object} options
+   * @param {Function|} cb
+   * @returns {*|promise}
    */
-  ready: function (options) {
+  ready: function (options, cb) {
 
+    var def = q.defer();
     options = options || {};
+    cb = cb || noop;
 
-    writeToFile(options.path, 'ready');
+    fs.writeFile(options.path || '.waitFor', 'ready', function (err) {
+      if (err) { def.reject(err); }
+      else { def.resolve(); }
+      cb(err);
+    });
+
+    return def.promise;
 
   },
 
@@ -50,9 +67,9 @@ var waitFor = {
     }
 
     options = options || {};
-    cb = cb || function () {};
+    cb = cb || noop;
 
-    var def = require('q').defer();
+    var def = q.defer();
 
     var id = setInterval(function () {
 

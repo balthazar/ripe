@@ -9,11 +9,12 @@ describe('waitFor', function () {
 
   it('should create file when calling start without options', function (cb) {
 
-    waitFor.start();
-    fs.readFile('.waitFor', function (err, data) {
-      if (err) { return cb(err); }
-      assert.strictEqual(data.toString(), 'waiting');
-      cb();
+    waitFor.start().then(function () {
+      fs.readFile('.waitFor', function (err, data) {
+        if (err) { return cb(err); }
+        assert.strictEqual(data.toString(), 'waiting');
+        cb();
+      });
     });
 
   });
@@ -21,11 +22,12 @@ describe('waitFor', function () {
 
   it('should create a file in the specified path', function (cb) {
 
-    waitFor.start({ path: __dirname + '/.test' });
-    fs.readFile('./test/.test', function (err, data) {
-      if (err) { return cb(err); }
-      assert.strictEqual(data.toString(), 'waiting');
-      cb();
+    waitFor.start({ path: __dirname + '/.test' }).then(function () {
+      fs.readFile('./test/.test', function (err, data) {
+        if (err) { return cb(err); }
+        assert.strictEqual(data.toString(), 'waiting');
+        cb();
+      });
     });
 
   });
@@ -35,12 +37,13 @@ describe('waitFor', function () {
     fs.readFile('.waitFor', function (err, data) {
       if (err) { return cb(err); }
       assert.strictEqual(data.toString(), 'waiting');
-      waitFor.ready();
 
-      fs.readFile('.waitFor', function (err, data) {
-        if (err) { return cb(err); }
-        assert.strictEqual(data.toString(), 'ready');
-        cb();
+      waitFor.ready().then(function () {
+        fs.readFile('.waitFor', function (err, data) {
+          if (err) { return cb(err); }
+          assert.strictEqual(data.toString(), 'ready');
+          cb();
+        });
       });
 
     });
@@ -131,11 +134,51 @@ describe('waitFor', function () {
 
   });
 
+  it('should try to chmod the waiting file', function (cb) {
+
+    waitFor.start();
+
+    waitFor.wait(function (err) {
+      assert.equal(!!err, true);
+      assert.strictEqual(err.code, 'EACCES');
+    }).catch(function (err) {
+      assert.equal(!!err, true);
+      assert.strictEqual(err.code, 'EACCES');
+      cb();
+    });
+
+    setTimeout(function () {
+      waitFor.ready();
+      fs.chmodSync('.waitFor', '000');
+    }, 42);
+
+  });
+
+  /*
+  it('should remove the file', function (cb) {
+
+    waitFor.start();
+
+    waitFor.wait(function (err) {
+      assert.equal(!!err, true);
+      assert.strictEqual(err.code, 'ENOENT');
+      console.log(err);
+      cb();
+    }).catch(function (err) {
+      assert.equal(!!err, true);
+      assert.strictEqual(err.code, 'ENOENT');
+      cb();
+    });
+
+    setTimeout(function () {
+      waitFor.ready();
+      fs.unlinkSync('.waitFor');
+    }, 42);
+  });
+  */
+
   after(function (cb) {
-    del([
-      '.waitFor',
-      './test/.test'
-    ], cb);
+    del(['.waitFor', './test/.test'], cb);
   });
 
 });
