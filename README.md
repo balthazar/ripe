@@ -19,7 +19,7 @@
       ripe.ready();
     }, 42);
 
-The `wait` method can be used either with a callback or a promise.
+The `wait` method can be used either with a callback or a promise (or both, if you're brave enough).
 
     ripe.wait(function () {
       // ready!
