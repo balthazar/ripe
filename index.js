@@ -79,6 +79,8 @@ var ripe = {
       });
     });
 
+    wss.on('error', noop);
+
     return def.promise;
 
   }
