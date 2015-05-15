@@ -1,4 +1,4 @@
-# ripe
+# ripe [![Used by](https://img.shields.io/badge/used%20by-bangular-blue.svg?style=flat-square)](https://github.com/42Zavattas/generator-bangular)
 
 [![Build Status](https://travis-ci.org/Apercu/ripe.svg?branch=master)](https://travis-ci.org/Apercu/ripe) [![Coverage Status](https://coveralls.io/repos/Apercu/ripe/badge.svg?branch=master)](https://coveralls.io/r/Apercu/ripe?branch=master) [![Dependency Status](https://david-dm.org/Apercu/ripe.svg)](https://david-dm.org/Apercu/ripe) [![Code Climate](https://codeclimate.com/github/Apercu/ripe/badges/gpa.svg)](https://codeclimate.com/github/Apercu/ripe)
 
