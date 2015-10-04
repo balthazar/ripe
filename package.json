@@ -18,8 +18,8 @@
   },
   "homepage": "https://github.com/Apercu/ripe",
   "dependencies": {
-    "q": "^1.2.0",
-    "ws": "^0.7.1"
+    "q": "^2.0.3",
+    "ws": "^0.8.0"
   },
   "devDependencies": {
     "coveralls": "^2.11.2",
